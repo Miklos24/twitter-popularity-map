@@ -1,1 +1,1 @@
-web: yarn build & gunicorn --chdir ./api api:app
+web: gunicorn --chdir ./api api:app
