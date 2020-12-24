@@ -11,5 +11,9 @@ def index():
 def get_current_time():
     return {'time': time.ctime()}
 
+@app.route('/api/tweets')
+def get_tweets():
+    pass
+
 if __name__=='__main__':
     app.run(threaded=True, port=5000)

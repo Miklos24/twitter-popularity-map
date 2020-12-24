@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import MapChart from './Components/MapChart';
+import MapSettings from './Components/MapSettings';
 
 function App() {
   const [currentTime, setCurrentTime] = useState(0);
@@ -16,20 +18,20 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <p> The current time is {currentTime}.</p>
+        <h1> Hated in the Nation </h1>
       </header>
+      <div className="App-body">
+        <MapSettings />
+        <div className="Map-container">
+          <MapChart />
+        </div>
+        <p>
+          The current time is {currentTime}. The prior text was just to test out
+          the API. In this section, I will be providing a description of how this
+          site works (once I finish writing it) and I will probably talk about the
+          Twitter import system and how all this data is organized.
+        </p>
+      </div>
     </div>
   );
 }
