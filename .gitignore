@@ -150,4 +150,4 @@ dmypy.json
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.twitter_keys.yaml
+./api/.twitter_keys.yaml
