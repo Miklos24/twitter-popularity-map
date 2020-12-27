@@ -12,6 +12,7 @@ const MapChart = () => {
     Arkansas: "rgb(170, 24, 65)",
     California: "rgb(45, 214, 41)",
     Connecticut: "rgb(106, 14, 207)",
+    Idaho: "rgb(101, 78, 51)",
   }
 
   return (
