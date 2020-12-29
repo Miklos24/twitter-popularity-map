@@ -34,12 +34,12 @@ const MapSettings = (props) => {
             value={1}
             variant="outline-danger"
             onClick={() => updateFunc(date, "neg")}
-          > Bad </ToggleButton>
+          > Unfavorable Tweets </ToggleButton>
           <ToggleButton
             value={2}
             variant="outline-success"
             onClick={() => updateFunc(date, "pos")}
-          > Good </ToggleButton>
+          > Favorable Tweets </ToggleButton>
         </ToggleButtonGroup>
       </div>
     </div>
