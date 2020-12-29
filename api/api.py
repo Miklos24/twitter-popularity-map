@@ -58,7 +58,12 @@ def fetch_new_tweets():
             pos = int(df[df['scores'] > 0.1].count()['id'])
             pos_tweet = df[df['scores'] ==
                            df['scores'].max()].iloc[0]["text"]
-            resp_dict[state] = (neg, pos, neg_tweet, pos_tweet)
+            resp_dict[state] = {
+                "neg_score": neg,
+                "pos_score": pos,
+                "neg_tweet": neg_tweet,
+                "pos_tweet": pos_tweet
+            }
             print(df)
         except requests.exceptions.HTTPError as e:
             print(e)
@@ -68,16 +73,23 @@ def fetch_new_tweets():
 
 @app.route('/api/tweets')
 def get_tweets():
-    # res = fetch_new_tweets()
-    date = dt.date.today()
+    if request.args.get('date'):
+        date = dt.datetime.fromtimestamp(int(request.args.get('date'))/1000).date()
+        print(date)
+    else:
+        date = dt.date.today()
 
     res = dict()
     for state_dat in db.session.query(StateModel):
         if (date - state_dat.date_retrieved).days == 0:
-            res[state_dat.state] = (
-                state_dat.neg_score, state_dat.pos_score, state_dat.neg_tweet, state_dat.pos_tweet)
+            res[state_dat.state] = {
+                "neg_score": state_dat.neg_score,
+                "pos_score": state_dat.pos_score,
+                "neg_tweet": state_dat.neg_tweet,
+                "pos_tweet": state_dat.pos_tweet
+            }
 
-    if len(res) == 0:
+    if len(res) == 0 and (date - dt.date.today()).days == 0:
         res = fetch_new_tweets()
         for state, scores in res.items():
             new_entry = StateModel(state=state, date_retrieved=dt.datetime.now(

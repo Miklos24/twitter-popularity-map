@@ -1,33 +1,45 @@
 import { useState, useEffect } from 'react';
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
+import * as d3 from 'd3';
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";
 
-const MapChart = () => {
+const MapChart = (props) => {
+  const [data, setData] = useState({});
+  const type = props.tweet_type;
+  const date = props.tweet_date;
+  const [curDate, setCurDate] = useState(new Date(date));
 
-  const colorScale = {
-    Alabama: "rgb(235, 29, 29)",
-    Alaska: "rgb(241, 205, 81)",
-    Arizona: "rgb(68, 150, 142)",
-    Arkansas: "rgb(170, 24, 65)",
-    California: "rgb(45, 214, 41)",
-    Connecticut: "rgb(106, 14, 207)",
-    Idaho: "rgb(101, 78, 51)",
-  }
+
+  useEffect(() => {
+    if (Object.entries(data).length === 0 || date !== curDate) {
+      fetch(`/api/tweets?date=${date.getTime()}`)
+        .then(res => res.json())
+        .then(data => {
+          setData(data)
+        })
+      setCurDate(date);
+    }
+    console.log(data);
+  }, [data, date, curDate]);
+
+  const colorScale = d3.scaleQuantile()
+    .domain(d3.extent(Object.values(data).map(({ [`${type}_score`] : score }) => (score))))
+    .range(d3.schemePurples[9]);
 
   return (
     <ComposableMap projection="geoAlbersUsa">
       <Geographies geography={geoUrl}>
         {({ geographies }) =>
           geographies.map(geo => {
-            console.log(geo.properties.name);
             return (
               <Geography
                 key={geo.rsmKey}
                 geography={geo}
-                fill={geo.properties.name in colorScale
-                  ? colorScale[geo.properties.name]
-                  : "#FFFFFF"}
+                fill={geo.properties.name in data
+                  ? colorScale(data[geo.properties.name][`${type}_score`])
+                  : "#FFFFFF"
+                }
                 stroke={"rgb(186, 186, 186)"}
               />
             );
