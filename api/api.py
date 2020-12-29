@@ -1,3 +1,4 @@
+import os
 import nltk
 import requests
 from flask import Flask, request
@@ -19,6 +20,7 @@ vader = SentimentIntensityAnalyzer()
 app = Flask(__name__, static_folder='../build', static_url_path='/')
 
 # TODO: This should be an environment variable
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 migrate = Migrate(app, db)
