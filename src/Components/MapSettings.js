@@ -4,6 +4,8 @@ import Form from 'react-bootstrap/Form';
 import { useState, useEffect } from 'react';
 
 const MapSettings = (props) => {
+  const [minDate, setMinDate] = useState(new Date(2020, 11, 28))
+
   const updateFunc = props.updateMap
   const date = props.date
   const type = props.type
@@ -14,11 +16,17 @@ const MapSettings = (props) => {
         <Form>
           <Form.Control
             type="range"
-            min="0"
-            max="10"
-            step="1"
+            min={0}
+            max={Math.round((Date.now() - minDate) / (24 * 60 * 60 * 1000))}
+            step={1}
+            value={Math.round((date - minDate) / (24 * 60 * 60 * 1000))}
+            onChange={(e) => {
+              e.preventDefault();
+              updateFunc(new Date(minDate.getTime() + (e.target.value * (24 * 60 * 60 * 1000))), type);
+            }}
           />
         </Form>
+        <p>{date.toDateString()}</p>
       </div>
       <div className="Map-toggle">
         <ToggleButtonGroup className="d-flex" type="radio" name="options" defaultValue={type === "neg" ? 1 : 2}>

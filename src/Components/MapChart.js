@@ -8,17 +8,20 @@ const MapChart = (props) => {
   const [data, setData] = useState({});
   const type = props.tweet_type;
   const date = props.tweet_date;
+  const [curDate, setCurDate] = useState(new Date(date));
+
 
   useEffect(() => {
-    if (Object.entries(data).length === 0) {
+    if (Object.entries(data).length === 0 || date !== curDate) {
       fetch(`/api/tweets?date=${date.getTime()}`)
         .then(res => res.json())
         .then(data => {
           setData(data)
         })
+      setCurDate(date);
     }
     console.log(data);
-  }, [data]);
+  }, [data, date, curDate]);
 
   const colorScale = d3.scaleQuantile()
     .domain(d3.extent(Object.values(data).map(({ [`${type}_score`] : score }) => (score))))
