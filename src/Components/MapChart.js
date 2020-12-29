@@ -4,31 +4,39 @@ import * as d3 from 'd3';
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";
 
-const MapChart = () => {
-  const [data, setData] = useState([]);
+const MapChart = (props) => {
+  const [data, setData] = useState({});
+  const type = props.tweet_type;
+  const date = props.tweet_date;
 
   useEffect(() => {
-    fetch('/api/tweets')
-      .then(res => res.json())
-      .then(data => {
-        setData(data)
-      });
-  });
+    if (Object.entries(data).length === 0) {
+      fetch(`/api/tweets?date=${date.getTime()}`)
+        .then(res => res.json())
+        .then(data => {
+          setData(data)
+        })
+    }
+    console.log(data);
+  }, [data]);
 
-  // const colorScale = d3.scaleLinear()
-  //   .domain(d3.extent(this.data, f('neg_score')))
+  const colorScale = d3.scaleQuantile()
+    .domain(d3.extent(Object.values(data).map(({ [`${type}_score`] : score }) => (score))))
+    .range(d3.schemePurples[9]);
 
   return (
     <ComposableMap projection="geoAlbersUsa">
       <Geographies geography={geoUrl}>
         {({ geographies }) =>
           geographies.map(geo => {
-            console.log(geo.properties.name);
             return (
               <Geography
                 key={geo.rsmKey}
                 geography={geo}
-                fill={"#FFFFFF"}
+                fill={geo.properties.name in data
+                  ? colorScale(data[geo.properties.name][`${type}_score`])
+                  : "#FFFFFF"
+                }
                 stroke={"rgb(186, 186, 186)"}
               />
             );

@@ -72,7 +72,8 @@ def fetch_new_tweets():
 @app.route('/api/tweets')
 def get_tweets():
     if request.args.get('date'):
-        date = request.args.get('date')
+        date = dt.datetime.fromtimestamp(int(request.args.get('date'))/1000).date()
+        print(date)
     else:
         date = dt.date.today()
 
@@ -86,7 +87,7 @@ def get_tweets():
                 "pos_tweet": state_dat.pos_tweet
             }
 
-    if len(res) == 0:
+    if len(res) == 0 and (date - dt.date.today()).days == 0:
         res = fetch_new_tweets()
         for state, scores in res.items():
             new_entry = StateModel(state=state, date_retrieved=dt.datetime.now(

@@ -5,15 +5,8 @@ import MapChart from './Components/MapChart';
 import MapSettings from './Components/MapSettings';
 
 function App() {
-  const [currentTime, setCurrentTime] = useState(0);
-
-  useEffect(() => {
-    fetch('/api/time')
-      .then(res => res.json())
-      .then(data => {
-        setCurrentTime(data.time)
-      });
-  });
+  const [type, setType] = useState("pos");
+  const [date, setDate] = useState(new Date(Date.now()))
 
   return (
     <div className="App">
@@ -21,12 +14,19 @@ function App() {
         <h1> Hated in the Nation </h1>
       </header>
       <div className="App-body">
-        <MapSettings />
+        <MapSettings
+          date={date}
+          type={type}
+          updateMap={(dt, tp) => {
+            setDate(dt);
+            setType(tp);
+          }}
+        />
         <div className="Map-container">
-          <MapChart />
+          <MapChart tweet_type={type} tweet_date={date}/>
         </div>
         <p>
-          The current time is {currentTime}. The prior text was just to test out
+          The current time is UNKNOWN. The prior text was just to test out
           the API. In this section, I will be providing a description of how this
           site works (once I finish writing it) and I will probably talk about the
           Twitter import system and how all this data is organized.
