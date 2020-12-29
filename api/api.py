@@ -45,9 +45,9 @@ def fetch_new_tweets():
     resp_dict = dict()
     for state in LIST_OF_STATES:
         qry_str = "entity:\"" + state + "\" -is:retweet lang:en -has:links -has:mentions -context:11.689566306014617600 -context:11.706083902411055104 -context:11.769193663230468096"
-        query = gen_request_parameters(qry_str, results_per_call=50)
+        query = gen_request_parameters(qry_str, results_per_call=100)
         try:
-            tweets = collect_results(query, max_tweets=250,
+            tweets = collect_results(query, max_tweets=200,
                                  result_stream_args=search_args)
             df = pd.DataFrame.from_dict(tweets)
             df['scores'] = df['text'].apply(
