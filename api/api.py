@@ -36,40 +36,43 @@ def get_current_time():
     return {'time': time.ctime()}
 
 
+# def fetch_new_tweets():
+#     # TODO: Allow this to look for env variables
+#     #
+#     search_args = load_credentials(
+#         "./.twitter_keys.yaml", yaml_key="search_tweets_v2", env_overwrite=False)
+#
+#     resp_dict = dict()
+#     for state in LIST_OF_STATES:
+#         qry_str = "entity:\"" + state + "\" -is:retweet lang:en -has:links -has:mentions -context:11.689566306014617600 -context:11.706083902411055104 -context:11.769193663230468096"
+#         query = gen_request_parameters(qry_str, results_per_call=100)
+#         try:
+#             tweets = collect_results(query, max_tweets=200,
+#                                  result_stream_args=search_args)
+#             df = pd.DataFrame.from_dict(tweets)
+#             df['scores'] = df['text'].apply(
+#                 lambda text: vader.polarity_scores(str(text))['compound'])
+#             neg = int(df[df['scores'] < -0.1].count()['id'])
+#             neg_tweet = df[df['scores'] ==
+#                            df['scores'].min()].iloc[0]["text"]
+#             pos = int(df[df['scores'] > 0.1].count()['id'])
+#             pos_tweet = df[df['scores'] ==
+#                            df['scores'].max()].iloc[0]["text"]
+#             resp_dict[state] = {
+#                 "neg_score": neg,
+#                 "pos_score": pos,
+#                 "neg_tweet": neg_tweet,
+#                 "pos_tweet": pos_tweet
+#             }
+#             print(df)
+#         except requests.exceptions.HTTPError as e:
+#             print(e)
+#
+#     return resp_dict
+
 def fetch_new_tweets():
-    # TODO: Allow this to look for env variables
-    #
-    search_args = load_credentials(
-        "./.twitter_keys.yaml", yaml_key="search_tweets_v2", env_overwrite=False)
-
-    resp_dict = dict()
-    for state in LIST_OF_STATES:
-        qry_str = "entity:\"" + state + "\" -is:retweet lang:en -has:links -has:mentions -context:11.689566306014617600 -context:11.706083902411055104 -context:11.769193663230468096"
-        query = gen_request_parameters(qry_str, results_per_call=100)
-        try:
-            tweets = collect_results(query, max_tweets=200,
-                                 result_stream_args=search_args)
-            df = pd.DataFrame.from_dict(tweets)
-            df['scores'] = df['text'].apply(
-                lambda text: vader.polarity_scores(str(text))['compound'])
-            neg = int(df[df['scores'] < -0.1].count()['id'])
-            neg_tweet = df[df['scores'] ==
-                           df['scores'].min()].iloc[0]["text"]
-            pos = int(df[df['scores'] > 0.1].count()['id'])
-            pos_tweet = df[df['scores'] ==
-                           df['scores'].max()].iloc[0]["text"]
-            resp_dict[state] = {
-                "neg_score": neg,
-                "pos_score": pos,
-                "neg_tweet": neg_tweet,
-                "pos_tweet": pos_tweet
-            }
-            print(df)
-        except requests.exceptions.HTTPError as e:
-            print(e)
-
-    return resp_dict
-
+    print("How did this happen?")
+    return {}
 
 @app.route('/api/tweets')
 def get_tweets():
@@ -91,11 +94,11 @@ def get_tweets():
 
     if len(res) == 0 and (date - dt.date.today()).days == 0:
         res = fetch_new_tweets()
-        for state, data in res.items():
-            new_entry = StateModel(state=state, date_retrieved=dt.datetime.now(
-            ), neg_score=data["neg_score"], pos_score=data["pos_score"], neg_tweet=data["neg_tweet"], pos_tweet=data["pos_tweet"])
-            db.session.add(new_entry)
-            db.session.commit()
+        # for state, data in res.items():
+        #     new_entry = StateModel(state=state, date_retrieved=dt.datetime.now(
+        #     ), neg_score=data["neg_score"], pos_score=data["pos_score"], neg_tweet=data["neg_tweet"], pos_tweet=data["pos_tweet"])
+        #     db.session.add(new_entry)
+        #     db.session.commit()
 
     return res
 
