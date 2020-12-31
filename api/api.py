@@ -91,9 +91,9 @@ def get_tweets():
 
     if len(res) == 0 and (date - dt.date.today()).days == 0:
         res = fetch_new_tweets()
-        for state, scores in res.items():
+        for state, data in res.items():
             new_entry = StateModel(state=state, date_retrieved=dt.datetime.now(
-            ), neg_score=scores[0], pos_score=scores[1], neg_tweet=scores[2], pos_tweet=scores[3])
+            ), neg_score=data["neg_score"], pos_score=data["pos_score"], neg_tweet=data["neg_tweet"], pos_tweet=data["pos_tweet"])
             db.session.add(new_entry)
             db.session.commit()
 
