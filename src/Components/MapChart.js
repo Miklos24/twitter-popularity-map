@@ -8,7 +8,7 @@ const MapChart = (props) => {
   const [data, setData] = useState({});
   const type = props.tweet_type;
   const date = props.tweet_date;
-  const [curDate, setCurDate] = useState(new Date(date));
+  const [curDate, setCurDate] = useState(new Date(2020, 11, 29));
 
 
   useEffect(() => {

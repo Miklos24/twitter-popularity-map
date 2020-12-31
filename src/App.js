@@ -6,7 +6,7 @@ import MapSettings from './Components/MapSettings';
 
 function App() {
   const [type, setType] = useState("pos");
-  const [date, setDate] = useState(new Date(Date.now()))
+  const [date, setDate] = useState(new Date(2020, 11, 29))
 
   return (
     <div className="App">

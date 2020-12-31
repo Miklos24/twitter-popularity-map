@@ -17,7 +17,7 @@ const MapSettings = (props) => {
           <Form.Control
             type="range"
             min={0}
-            max={Math.round((Date.now() - minDate) / (24 * 60 * 60 * 1000))}
+            max={1}
             step={1}
             value={Math.round((date - minDate) / (24 * 60 * 60 * 1000))}
             onChange={(e) => {
