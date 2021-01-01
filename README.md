@@ -1,70 +1,21 @@
-# Getting Started with Create React App
+# Hated in the Nation
+A visualization of Twitter sentiment analysis.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## The Big Idea
+In short, this project is intended to showcase how Twitter users' opinions on the 50 states in the USA change over time. 
 
-## Available Scripts
+## The Tech Stack
 
-In the project directory, you can run:
+This project is deployed on [Heroku](https://twitter-popularity-map.herokuapp.com) and uses Flask for its backend. In order to get the initial data for analysis, Flask queries the Twitter APIv2 and stores that information in a PostgreSQL database. The processed data produced by Flask is communicated to a React frontend using a REST API.
 
-### `npm start`
+## The Analysis
+Each day, I sample 100 tweets per states using the Twitter APIv2. In this query, I use the API's new Annotations feature to grab Tweets about a particular state, and attempt to filter out bots by disallowing links. I also use Annotations to attempt to filter out sports-related results, which aren't explicitly about the state itself. I then use the Natural Language Toolik (NTLK), a natural language processing library for Python, to determine the general sentiment of every tweet. Based off of the score that NTLK generates, I categorize each tweet as either positive, negative, or neutral. Each state is then scored on its percentage of positive and negative tweets. I also store the most negative and positive tweet (according to NTLK) as example tweets to later show the user.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## The Visualization
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+After the data is passed to React via the REST API, I use simple-react-maps to generate a heatmap of the US. Depending on the settings that the user selects, the map will color scale based on either how "loved" or "hated" states are. User's may also use the date slider to query a specific date, and can use the slider to see how sentiments change over time.
 
-### `npm test`
+## Moving Forward
+In the future, I would like to provide the end user with some more information about each state, such as its overall ranking. I would also like the user to see an example tweet for each sentiment for each state on each date.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
