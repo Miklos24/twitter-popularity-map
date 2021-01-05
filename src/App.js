@@ -28,10 +28,6 @@ function App() {
         <p>
           Use the slider on the left to select a date to poll tweets from, and use the right toggle to get positive or negative tweets.
         </p>
-        // <p>
-        //   In the future, there are many features I'd like to add. I would list them,
-        //   but I am tired. Apologies for the wall of text.
-        // </p>
       </div>
     </div>
   );
