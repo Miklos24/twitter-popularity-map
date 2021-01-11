@@ -28,6 +28,9 @@ function App() {
         <p>
           Use the slider on the left to select a date to poll tweets from, and use the right toggle to get positive or negative tweets.
         </p>
+        <p><em>
+          Note: The map currently only shows two days worth of data because of monthly rate limits from the Twitter API. Once those limits expire, I will be updating the map to include more dates, ideally up to current day.
+        </em></p>
       </div>
     </div>
   );
